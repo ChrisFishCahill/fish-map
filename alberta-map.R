@@ -1,7 +1,33 @@
 # install this version of ggalt that Elio Campitelli figured out cleverly:
-devtools::install_github("eliocamp/ggalt@new-coord-proj") #ggalt for TTM projection 
-devtools::install_github("ropensci/rnaturalearthhires") # provinces
-devtools::install_github("seananderson/ggsidekick") # theme_sleek()
+# devtools::install_github("eliocamp/ggalt@new-coord-proj") #ggalt for TTM projection 
+# devtools::install_github("ropensci/rnaturalearthhires") # provinces
+# devtools::install_github("seananderson/ggsidekick") # theme_sleek()
+
+library(ggplot2)
+theme_set(theme_light())
+library(tidyr)
+library(INLA)
+library(dplyr)
+library(grid)
+library(gridExtra)
+library(ggalt)
+library(ggpubr)
+library(ggforce)
+library(rnaturalearth)
+library(raster)
+library(rnaturalearthdata)
+library(rnaturalearthhires)
+library(maps)
+library(maptools)
+library(grid)
+
+# data must have "Long_c" and "Lat_c" to match ggplot--> locations to plot
+# alberta_map(data=data, filename="map") --> prints a saves resolution "map.png"
+
+# install this version of ggalt that Elio Campitelli figured out cleverly:
+# devtools::install_github("eliocamp/ggalt@new-coord-proj") #ggalt for TTM projection 
+# devtools::install_github("ropensci/rnaturalearthhires") # provinces
+# devtools::install_github("seananderson/ggsidekick") # theme_sleek()
 
 library(ggplot2)
 theme_set(theme_light())
@@ -36,7 +62,8 @@ alberta_map <- function(data = data, filename = filename) {
     theme(
       axis.title = element_blank(),
       axis.text = element_blank(),
-      axis.ticks = element_blank()
+      axis.ticks = element_blank(), 
+      panel.border = element_blank()
     ) +
     coord_sf(crs = "+proj=lcc +lat_1=49 +lat_2=77
     +lat_0=63.390675 +lon_0=-91.86666666666666 +x_0=6200000 +
@@ -76,9 +103,11 @@ alberta_map <- function(data = data, filename = filename) {
       aes(x = Long_c, y = Lat_c, group = id)
     ) +
     geom_point(pch = 21, size = 1.5, data = data, aes(Long_c, Lat_c), fill = "black") +
-    geom_point(pch = 24, size = 3, data = cities, aes(Long_c, Lat_c), fill = "blue") +
+    geom_point(pch = 24, size = 3, data = cities, aes(Long_c, Lat_c), fill = "blue") + 
     scale_x_continuous(breaks = c(-120, -115, -110)) +
     scale_y_continuous(breaks = c(49, 52, 56, 60)) +
+  	annotate("text", x = cities$Long_c[1], y=cities$Lat_c[1]+0.25, label = "Edmonton") +
+  	annotate("text", x = cities$Long_c[2], y=cities$Lat_c[2]+0.25, label = "Calgary") +
     ylab("Latitude") +
     xlab("Longitude") +
     ggsidekick::theme_sleek() +
@@ -94,16 +123,19 @@ alberta_map <- function(data = data, filename = filename) {
     ) +
     ggalt::coord_proj(
       paste0(CRS("+proj=tmerc +lat_0=0 +lon_0=-115 +k=0.9992 +x_0=500000 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs"))
-    )
+    ) 
   # study_map
   study_map <- study_map + scale_bar(
-    lon = -120, lat = 51, distance_lon = 100,
-    distance_lat = 10, distance_legend = 50, dist_unit = "km", orientation = TRUE,
-    arrow_length = 55, arrow_distance = 85, arrow_north_size = 0.75
+    lon = -120, lat = 51.1, distance_lon = 100,
+    distance_lat = 10, distance_legend = 50, dist_unit = "km", orientation = F#, orientation = TRUE,
+    #arrow_length = 55, arrow_distance = 85, arrow_north_size = 0.75
   )
   # study_map
-  png(filename = paste0(filename, ".png"), height = 11, width = 7, units = "in", res = 1200)
-  vp_inset <- grid::viewport(width = 0.29, height = 0.27, x = 0.08, y = 0, just = c("left", "bottom"))
+  rotation <- 16
+  png(filename = paste0(filename, ".png"), 
+  	height = 11, width = 7, units = "in", res = 1200)
+  vp_inset <- grid::viewport(angle=rotation, width = 0.3, height = 0.3, 
+  	x = 0.14, y = -0.06, just = c("left", "bottom"))
   print(study_map)
   print(inset, vp = vp_inset)
   dev.off()

@@ -1,6 +1,7 @@
 # install this version of ggalt that Elio Campitelli figured out cleverly:
-devtools::install_github("eliocamp/ggalt@new-coord-proj")
-devtools::install_github("ropensci/rnaturalearthhires")
+devtools::install_github("eliocamp/ggalt@new-coord-proj") #ggalt for TTM projection 
+devtools::install_github("ropensci/rnaturalearthhires") # provinces
+devtools::install_github("seananderson/ggsidekick") # theme_sleek()
 
 library(ggplot2)
 theme_set(theme_light())
@@ -20,9 +21,10 @@ library(maps)
 library(maptools)
 library(grid)
 
-alberta_map(data=data, filename="map")
 # data must have "Long_c" and "Lat_c" to match ggplot--> locations to plot
-alberta_map <- function(data = data, filename=filename) {
+# alberta_map(data=data, filename="map") --> prints a saves resolution "map.png"
+
+alberta_map <- function(data = data, filename = filename) {
   canada <- ne_countries(scale = "medium", returnclass = "sf", country = "canada")
   provinces <- ne_states(country = "canada", returnclass = "sf")
   alberta <- provinces %>% filter(name %in% "Alberta")
@@ -99,16 +101,16 @@ alberta_map <- function(data = data, filename=filename) {
     distance_lat = 10, distance_legend = 50, dist_unit = "km", orientation = TRUE,
     arrow_length = 55, arrow_distance = 85, arrow_north_size = 0.75
   )
-  #study_map
-  png(filename = paste0(filename, ".png"), height=11, width=7, units = "in", res = 1200)
+  # study_map
+  png(filename = paste0(filename, ".png"), height = 11, width = 7, units = "in", res = 1200)
   vp_inset <- grid::viewport(width = 0.29, height = 0.27, x = 0.08, y = 0, just = c("left", "bottom"))
   print(study_map)
   print(inset, vp = vp_inset)
   dev.off()
 }
 
-#Extra mapping stuff for scalebar and arrow:
-#minor changes from devtools::install_github("3wen/legendMap")
+# Extra mapping stuff for scalebar and arrow:
+# minor changes from devtools::install_github("3wen/legendMap")
 create_scale_bar <- function(lon, lat, distance_lon, distance_lat,
                              distance_legend, dist_units = "km") {
   # First rectangle

@@ -24,32 +24,6 @@ library(grid)
 # data must have "Long_c" and "Lat_c" to match ggplot--> locations to plot
 # alberta_map(data=data, filename="map") --> prints a saves resolution "map.png"
 
-# install this version of ggalt that Elio Campitelli figured out cleverly:
-# devtools::install_github("eliocamp/ggalt@new-coord-proj") #ggalt for TTM projection 
-# devtools::install_github("ropensci/rnaturalearthhires") # provinces
-# devtools::install_github("seananderson/ggsidekick") # theme_sleek()
-
-library(ggplot2)
-theme_set(theme_light())
-library(tidyr)
-library(INLA)
-library(dplyr)
-library(grid)
-library(gridExtra)
-library(ggalt)
-library(ggpubr)
-library(ggforce)
-library(rnaturalearth)
-library(raster)
-library(rnaturalearthdata)
-library(rnaturalearthhires)
-library(maps)
-library(maptools)
-library(grid)
-
-# data must have "Long_c" and "Lat_c" to match ggplot--> locations to plot
-# alberta_map(data=data, filename="map") --> prints a saves resolution "map.png"
-
 alberta_map <- function(data = data, filename = filename) {
   canada <- ne_countries(scale = "medium", returnclass = "sf", country = "canada")
   provinces <- ne_states(country = "canada", returnclass = "sf")

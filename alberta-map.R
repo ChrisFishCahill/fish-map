@@ -119,7 +119,8 @@ alberta_map <- function(data = data, filename = filename) {
       strip.text.x = element_blank(),
       panel.spacing.x = unit(1, "lines"),
       panel.spacing.y = unit(0.5, "lines"),
-      panel.border = element_blank()
+      panel.border = element_blank(), 
+    	axis.ticks = element_blank()
     ) +
     ggalt::coord_proj(
       paste0(CRS("+proj=tmerc +lat_0=0 +lon_0=-115 +k=0.9992 +x_0=500000 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs"))
@@ -131,7 +132,7 @@ alberta_map <- function(data = data, filename = filename) {
     #arrow_length = 55, arrow_distance = 85, arrow_north_size = 0.75
   )
   # study_map
-  rotation <- 16
+  rotation <- 15
   png(filename = paste0(filename, ".png"), 
   	height = 11, width = 7, units = "in", res = 1200)
   vp_inset <- grid::viewport(angle=rotation, width = 0.3, height = 0.3, 

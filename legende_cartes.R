@@ -1,3 +1,4 @@
+#small changes from devtools::install_github("3wen/legendMap")
 create_scale_bar <- function(lon, lat, distance_lon, distance_lat,
                              distance_legend, dist_units = "km") {
   # First rectangle

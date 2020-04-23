@@ -21,10 +21,14 @@ library(maps)
 library(maptools)
 library(grid)
 
+not_surveyed = read.csv("all_lakes.csv")
+
+devtools::source_url("https://raw.githubusercontent.com/ChrisFishCahill/fish-map/master/alberta-map.R")
+alberta_map(data = data, filename = "analysis2/Fig_1_map")
 # data must have "Long_c" and "Lat_c" to match ggplot--> locations to plot
 # alberta_map(data=data, filename="map") --> prints a saves resolution "map.png"
 
-alberta_map <- function(data = data, filename = filename) {
+alberta_map <- function(data = data, filename = filename, not_surveyed=not_surveyed) {
   canada <- ne_countries(scale = "medium", returnclass = "sf", country = "canada")
   provinces <- ne_states(country = "canada", returnclass = "sf")
   alberta <- provinces %>% filter(name %in% "Alberta")
@@ -78,6 +82,7 @@ alberta_map <- function(data = data, filename = filename) {
     ) +
     geom_point(pch = 21, size = 1.5, data = data, aes(Long_c, Lat_c), fill = "black") +
     geom_point(pch = 24, size = 3, data = cities, aes(Long_c, Lat_c), fill = "blue") + 
+    geom_point(pch = 1, size = 1.5, data = not_surveyed, aes(Long_c, Lat_c)) +
     scale_x_continuous(breaks = c(-120, -115, -110)) +
     scale_y_continuous(breaks = c(49, 52, 56, 60)) +
   	annotate("text", x = cities$Long_c[1], y=cities$Lat_c[1]+0.25, label = "Edmonton") +

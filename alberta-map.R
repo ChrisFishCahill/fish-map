@@ -21,10 +21,9 @@ library(maps)
 library(maptools)
 library(grid)
 
-not_surveyed = read.csv("all_lakes.csv")
+# devtools::source_url("https://raw.githubusercontent.com/ChrisFishCahill/fish-map/master/alberta-map.R")
+# alberta_map(data = data, filename = "analysis2/Fig_1_map")
 
-devtools::source_url("https://raw.githubusercontent.com/ChrisFishCahill/fish-map/master/alberta-map.R")
-alberta_map(data = data, filename = "analysis2/Fig_1_map")
 # data must have "Long_c" and "Lat_c" to match ggplot--> locations to plot
 # alberta_map(data=data, filename="map") --> prints a saves resolution "map.png"
 
